@@ -47,7 +47,7 @@ public class ExecutionCoreImpl implements ExecutionCore {
 
             Method mainRunMethod = cls.getMethod("main",String[].class);
             String[] params = null;
-            mainRunMethod.invoke(null,params);
+            mainRunMethod.invoke(null,(Object)params);
             return "success execution";
 
         } catch (IllegalAccessException e) {

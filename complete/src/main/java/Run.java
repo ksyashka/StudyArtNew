@@ -12,7 +12,7 @@ import utils.dynamic.core.ExecutionCoreImpl;
  * Created by Yuriy on 11.04.2017.
  */
 public class Run {
-    private static final String LESSON_PATH = "C:\\Users\\Yuriy\\IdeaProjects\\StudyArtNew\\complete\\resources\\Lesson1.java" ;
+    private static final String LESSON_PATH = "C:/Users/Yuriy/IdeaProjects/StudyArtNew/complete/resources/Lesson1.java" ;
 
     public static void main(String[] args) {
         ExecutionCore executionCore = new ExecutionCoreImpl(new BashImpl());
