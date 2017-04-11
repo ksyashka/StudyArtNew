@@ -1,21 +1,24 @@
+package mockitotest;
+
 import controller.ILessonController;
 import controller.LessonControllerImpl;
 import exception.InvalidLessonPathException;
-import org.eclipse.jgit.api.errors.GitAPIException;
+import org.mockito.Mockito;
 import utils.BashImpl;
-import utils.GitClone;
+import utils.IBash;
 import utils.dynamic.core.ExecuteCommandException;
 import utils.dynamic.core.ExecutionCore;
 import utils.dynamic.core.ExecutionCoreImpl;
 
 /**
- * Created by Yuriy on 11.04.2017.
+ * Created by ksyashka on 11.04.2017.
  */
-public class Run {
+public class TestMockController {
     private static final String LESSON_PATH = "C:/Users/ksyashka/IdeaProjects/StudyArtNew/complete/resources/Lesson1.java" ;
 
     public static void main(String[] args) {
-        ExecutionCore executionCore = new ExecutionCoreImpl(new BashImpl());
+        IBash bash = Mockito.mock(BashImpl.class);
+        ExecutionCore executionCore = new ExecutionCoreImpl(bash);
         ILessonController lessonController = new LessonControllerImpl(executionCore);
         try {
             lessonController.checkLesson(LESSON_PATH);
@@ -25,4 +28,5 @@ public class Run {
             e.printStackTrace();
         }
     }
+
 }
