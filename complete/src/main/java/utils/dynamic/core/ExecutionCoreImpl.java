@@ -3,6 +3,8 @@ package utils.dynamic.core;
 import utils.IBash;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -31,28 +33,35 @@ public class ExecutionCoreImpl implements ExecutionCore {
     }
 
     @Override
-    public String execute(String compiledPath) {
+    public String execute(String compiledPath) throws ExecuteCommandException {
         Class cl = ExecutionCoreImpl.class;
 
-        try{
-            File root = new File(compiledPath);
-            File sourceFile = new File(compiledPath);
-            //01:53
-            URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] { root.toURI().toURL() });
-            Class<?> cls = Class.forName("test.Test", true, classLoader); // Should print "hello".
-            Object instance = cls.newInstance(); // Should print "world".
+        try {
+            File root = new File(compiledPath.substring(0, compiledPath.lastIndexOf("/")));
+            File compiled = new File(compiledPath);
+
+            URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{root.toURI().toURL()});
+            String className = compiledPath.substring(compiledPath.lastIndexOf('/') + 1, compiledPath.lastIndexOf('.'));
+
+            Class<?> cls = Class.forName(className, true, classLoader); // Should print "hello".
+
+            Method mainRunMethod = cls.getMethod("main",String[].class);
+            String[] params = null;
+            mainRunMethod.invoke(null,params);
+            return "success execution";
 
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
         }
 
-
-        return null;
+        throw new ExecuteCommandException("some problem");
     }
 }

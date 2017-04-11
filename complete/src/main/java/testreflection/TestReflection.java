@@ -14,7 +14,7 @@ public class TestReflection {
         getAllInfo(course);
     }
 
-    public static void getAllInfo(Object object){
+    public static<T> void getAllInfo(Object object){
         Class cl = object.getClass();
 
         System.out.println("Fields");

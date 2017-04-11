@@ -5,6 +5,6 @@ package utils.dynamic.core;
  */
 public interface ExecutionCore {
     String compile (String path);
-    String execute (String compiledPath);
+    String execute (String compiledPath) throws ExecuteCommandException;
 
 }
