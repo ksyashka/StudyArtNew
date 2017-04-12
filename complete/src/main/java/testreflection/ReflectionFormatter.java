@@ -6,9 +6,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Yuriy on 12.04.2017.
- */
+
 public class ReflectionFormatter {
 
     public String format(Object obj) {
@@ -19,10 +17,14 @@ public class ReflectionFormatter {
         Field[] fields = struc.getDeclaredFields();
         for (Field field : fields) {
             try {
-                String fieldName = field.getName();
-                String firstUpperCaseLetter = fieldName.substring(0, 1).toUpperCase();
-                Method getFieldValue = struc.getMethod("get" + firstUpperCaseLetter + fieldName.substring(1));
-                sb.append(String.format("%s:%s\n", fieldName, getFieldValue.invoke(obj)));
+                //Save save = field.getDeclaredAnnotation(Save.class);
+                if (field.isAnnotationPresent(Save.class)) {
+                    Save save = field.getDeclaredAnnotation(Save.class);
+                    String fieldName = field.getName();
+                    String firstUpperCaseLetter = fieldName.substring(0, 1).toUpperCase();
+                    Method getFieldValue = struc.getMethod("get" + firstUpperCaseLetter + fieldName.substring(1));
+                    sb.append(String.format("%s:%s\n", save.name(), getFieldValue.invoke(obj)));
+                }
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
@@ -49,8 +51,19 @@ public class ReflectionFormatter {
             Class cl = Class.forName(type);
             Object instance = cl.newInstance();
 
+            Map<String, Field> fieldAnnotNameMap = new HashMap<>();
+            for (Field field : cl.getDeclaredFields()) {
+                Save save = field.getAnnotation(Save.class);
+                if (save != null){
+                    fieldAnnotNameMap.put(save.name(),field);
+                }
+
+            }
+            //integration over map
             for (String key : keyValuesMap.keySet()) {
-                Field field = cl.getDeclaredField(key);
+                // getField using Annotation property
+                //Field field = cl.getDeclaredField(key);
+                Field field = fieldAnnotNameMap.get(key);
 
                 Class<?> fieldType = field.getType();
                 String firstUpperCaseLetter = key.substring(0, 1).toUpperCase();
@@ -70,8 +83,8 @@ public class ReflectionFormatter {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
+       // } catch (NoSuchFieldException e) {
+         //   e.printStackTrace();
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {

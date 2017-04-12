@@ -5,8 +5,11 @@ package testreflection;
  */
 public class Robot {//POJO class-model: default const, get,set
 
+    @Save(name = "id", order = 1)
     private int id;
+    @Save(name = "model", order = 2)
     private String model;
+    @Save(name = "price", order = 3)
     private double price;
 
 

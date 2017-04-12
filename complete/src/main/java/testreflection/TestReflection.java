@@ -4,9 +4,7 @@ import model.Course;
 
 import java.util.Arrays;
 
-/**
- * Created by Yuriy on 10.04.2017.
- */
+
 public class TestReflection {
 
     public static void main(String[] args) {
