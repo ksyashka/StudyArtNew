@@ -35,6 +35,12 @@ public class GreetingController {
         List<Lesson> lessons = new ArrayList<>();
         lessons.add(lesson);
         return new Course(name,"testAuthor",lessons);
+    }
+
+    @RequestMapping("/robot/get")
+    public Robot getRobot(@RequestParam(value="name", defaultValue="artcode") String name){
+        String[] commands = {"sing", "dance", "clean"};
+        return new Robot(1,"R2D2",10000.0,commands);
 
     }
     @RequestMapping("/addCourse")
